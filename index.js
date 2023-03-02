@@ -1,6 +1,8 @@
-const comments = [{depth: 9, item: 'Which is a very common way of creating one app/program with multiple languages.'},
-{depth: 9, item: 'They werent designed as a single program. The Pok…s explaining how it works with what I just built.'},
-{depth: 4, item: 'I wouldnt really call that a single program tbh, …ms and then does a little communication with them'}]
+const comments = 
+// [{depth: 9, item: 'Which is a very common way of creating one app/program with multiple languages.'},
+// {depth: 9, item: 'They werent designed as a single program. The Pok…s explaining how it works with what I just built.'},
+// {depth: 4, item: 'I wouldnt really call that a single program tbh, …ms and then does a little communication with them'}]
+
 //  [{depth: 44, item: '&lt;whispers&gt;Ive never heard of them until this thread. #protobufs2024'},
 // {depth: 39, item: 'Now I feel left out of working almost exclusively with XML. Protobufs must be the shit. \n\nProtobufs.'},
 // {depth: 34, item: 'You dumb bastard. Its not a sailboat. Its protobufs!'},
@@ -44,8 +46,13 @@ const comments = [{depth: 9, item: 'Which is a very common way of creating one a
 // {depth: 4, item: 'You can put javascript in a php or asp file and mix match that way.'},
 // {depth: 9, item: 'Nah hack it up in a hex editor #DEADBEEF :-)'},
 // {depth: 4, item: 'OGs use CSV files :p'},
-// {depth: 4, item: '*React has entered the chat*'}
-// ]
+// {depth: 4, item: '*React has entered the chat*'}]
+
+[{depth: 24, item: "What I meant was that most websites and webapps in… least, two stacks, and they aren't microservices"},
+{depth: 19, item: "Sure, I guess? But it's a a lot more reasonable th…sed about what point you are trying to make here?"},
+{depth: 14, item: 'The *today* is an assumption'},
+{depth: 9, item: 'Nobody was asking which method was first, OP asked…ated API layer), or messaging systems like kafka.'},
+{depth: 4, item: "I don't think that's relevant? Multiple programmin…with each other date to way before microservices."}]
 
 let orderedComments = []
 let thread = [];
@@ -56,6 +63,7 @@ let removedArrays;
 
 
 for(let i = 0; i < comments.length; i++){
+    //THESE FIRST TWO CONDITIONALS ARE FOR ESTABLISHING THE CURRENT THREAD
     if(i === 0){
         thread.push(comments[i])
     } 
@@ -63,31 +71,21 @@ for(let i = 0; i < comments.length; i++){
         thread.unshift(comments[i])
     }
 
-
-
-
-
-
-
+    //HANDLES THE CODE FOR WHEN THE NEXT VALUE IS NOT A COMMENT THREAD
     else if(comments[i]['depth'] >= comments[(i - 1)]['depth']){
-    
         if(thread.length > 0){
             theShift = thread.shift()
             if(thread.length > 0){
                 orderedComments[orderedComments.length] = (thread)
             }
-            
-                if(orderedComments.length == 1 && theShift['depth'] > orderedComments[0][0]['depth']){
-                    location = -1
-                } 
-                else {
-                location = orderedComments.findLastIndex(obj => theShift['depth'] >= obj[0]['depth']) 
-                }
+
+            if(orderedComments.length == 1 && theShift['depth'] > orderedComments[0][0]['depth']){
+                location = -1
+            } 
+            else {
+            location = orderedComments.findLastIndex(obj => theShift['depth'] >= obj[0]['depth']) 
+            }
                 
-            
-            
-                
-            // location = orderedComments.findLastIndex(obj => theShift['depth'] >= (Array.isArray(obj) ? obj[0]['depth'] : obj['depth']))
 
             if(location == -1){
                 orderedComments.unshift([theShift])
@@ -97,130 +95,55 @@ for(let i = 0; i < comments.length; i++){
             else{
                 if(location == (orderedComments.length - 1)){
                     orderedComments[(orderedComments.length)] = ([theShift])
-                    // orderedComments[(orderedComments.length - 1)].unshift(theShift)
-                    // removedArrays = orderedComments.splice(orderedComments.length - 1)
-                    // orderedComments[orderedComments.length - 1] = removedArrays.reduce((acc, cur) => acc.concat(cur), []);
-
-                } else {
-                   
+                }
+                 else {    
                 orderedComments[location + 1].unshift(theShift)
                 removedArrays = orderedComments.splice(location + 1)
                 orderedComments[location + 1] = removedArrays.reduce((acc, cur) => acc.concat(cur), []);
                     
                 }
             }
-            
-
         }
-
-
             thread = [];
             thread.push(comments[i])
-            if(i === comments.length - 1){
-                orderedComments.push(thread)
+    }
+
+
+    //TO TEDIOUSLY HANDLE THE LAST VALUES OF THE LOOP WITH RECOPYING THE ABOVE CODE
+    if(i == comments.length - 1){
+   
+        if(thread.length > 0){
+            theShift = thread.shift()
+            if(thread.length > 0){
+                orderedComments[orderedComments.length] = (thread)
             }
-        
+
+            if(orderedComments.length == 1 && theShift['depth'] > orderedComments[0][0]['depth']){
+                location = -1
+            } 
+            else {
+            location = orderedComments.findLastIndex(obj => theShift['depth'] >= obj[0]['depth']) 
+            }
+                
+            if(location == -1){
+                orderedComments.unshift([theShift])
+                removedArrays = orderedComments.splice(0)
+                orderedComments[0] = removedArrays.reduce((acc, cur) => acc.concat(cur), []);
+            }
+            else{
+                if(location == (orderedComments.length - 1)){
+                    orderedComments[(orderedComments.length)] = ([theShift])
+                } 
+                else { 
+                orderedComments[location + 1].unshift(theShift)
+                removedArrays = orderedComments.splice(location + 1)
+                orderedComments[location + 1] = removedArrays.reduce((acc, cur) => acc.concat(cur), []);   
+                }
+            }
+        }
     }
 
 }
 
 console.log(orderedComments)
-
- // console.log(typeof(orderedComments[0]))
-                // console.log(i)
-                // console.log(orderedComments[0])
-
-    // location = orderedComments.findLastIndex(obj => theShift['depth'] >= (Array.isArray(obj) ? obj[0]['depth'] : obj['depth']))
-
-        // else {
-        //     if(Array.isArray(orderedComments[location])){
-        //         if (location === (orderedComments.length - 1)){
-        //             orderedComments[orderedComments.length] = theShift
-        //         } else{
-                    // orderedComments[location + 1].unshift.theShift
-                // }   
-                // mergedObj = mergedObj.flat()
-            // }
-            //  else{ 
-                // orderedComments.splice(location, 0, theShift)
-                
-        //     }
-        // }
-
-
-
-        //     else{ 
-        
-        //     mergedObj = Object.assign({}, ...orderedComments.slice(location))
-        //     orderedComments.splice(location, orderedComments.length - location, mergedObj)
-        // }
-
-
-
-
-    
-
-        
-        
-        //  if(location == -1 || (orderedComments[0].length > 0 ? orderedComments[0]['depth'] : orderedComments['depth'])){
-        //         orderedComments.unshift(theShift)
-        //         mergedObj = Object.assign({}, ...orderedComments.slice(location))
-                
-        //         orderedComments.splice(location, orderedComments.length - location, mergedObj)
-        //         thread = []
-        //     }
-        //     else{
-                
-                // console.log(orderedComments[location])
-                // orderedComments[location].unshift(theShift)
-                // mergedObj = Object.assign({}, ...orderedComments.slice(location))
-                
-                // orderedComments.splice(location, orderedComments.length - location, mergedObj)
-                // thread = []
-                // if (Array.isArray(orderedComments[location])) {
-                //     orderedComments[location].unshift(theShift);
-                //     mergedObj = Object.assign({}, ...orderedComments.slice(location));
-            
-                //     orderedComments.splice(location, orderedComments.length - location, mergedObj);
-                //     thread = [];
-              
-
-                // }
-       
-                // }
-    
-    
-        // }
-   
-
-
-
-
-
-
-
-// console.log(orderedComments)
-
-
-
-
-
-
- // if(location == -1 && orderedComments[0]['depth'] > theShift['depth']){
-            //     orderedComments[0].unshift(theShift)
-            //     mergedObj = Object.assign({}, ...orderedComments.slice(location))
-                
-            //     orderedComments.splice(location, orderedComments.length - location, mergedObj)
-            //     thread = []
-            // }
-            // else{
-            //     // orderedComments.push(thread)
-            //     orderedComments[location].unshift(theShift)
-            //     mergedObj = Object.assign({}, ...orderedComments.slice(location))
-                
-            //     orderedComments.splice(location, orderedComments.length - location, mergedObj)
-            //     thread = []
-            // }
-
-
 
