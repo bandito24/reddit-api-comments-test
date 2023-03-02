@@ -19,29 +19,29 @@ const comments = [{depth: 44, item: '&lt;whispers&gt;Ive never heard of them unt
 {depth: 9, item: 'Its important to know also protobufs'},
 {depth: 4, item: 'to expand on this - there are common "protocols" t… is another format\n\nthe newer hotness is protobuf'},
 {depth: 4, item: 'Great answer!'},
-// {depth: 9, item: "I'm so glad someone said this. All of the lego blo…igned to fit together, regardless of size format."},
-// {depth: 24, item: 'Ive never hurt my foot stepping on a regular expression. Check and mate.'},
-// {depth: 19, item: 'That is absolutely useless. Lego is better.'},
-// {depth: 14, item: 'I also know regular expressions.'},
-// {depth: 9, item: 'Thank god you saved the day, I was also going to tell everyone'},
-// {depth: 9, item: 'I dirty deleted my comment when I saw yours.\nThank…combine-duplo-and-lego-pieces-blt5b27e84ae5653a30'},
-// {depth: 4, item: '&gt; Imagine fitting legos and duplo together. The…plo-blocks-compatible-with-lego-blocks-in-any-way'},
-// {depth: 19, item: 'Oh yes! It was just fine. I just really enjoy shar… and how they interact is very interesting to me.'},
-// {depth: 14, item: 'Oh yeah that makes sense, I just used french as an…me to my mind. But I hope it got the idea across.'},
-// {depth: 14, item: 'Most popular programming languages were highly inf…r analogy (C being similar to Latin in this case)'},
-// {depth: 19, item: 'He defeated king Harold and started the Norman con…"\n\nThanks for bringing the error to my attention!'},
-// {depth: 14, item: 'William the Bastard Duke of Normandy, also known a…nqueror, did what now? At the Battle of Hastings?'},
-// {depth: 9, item: 'Should have gone with an non Latin language like J…e battle of hastings for this.\n\nEdit-fixed a typo'},
-// {depth: 14, item: 'JSON is just one way to represent data, one of the…erves to make it easier to transfer and maintain.'},
-// {depth: 9, item: 'so in this case is JSON just a way to translate? A…t the structure of the code it looks intimidating'},
-// {depth: 4, item: 'If may I add another example to your explanation:\n…ifferent word ( Milk in english, Lait in French).'},
-// {depth: 9, item: 'php writes text like "SELECT \\* FROM USER" to a so…could be anything, as long as the data is correct'},
-// {depth: 4, item: 'Can I just ask - if, say, PHP connects to my datab…? Through what protocol do these two communicate?'},
-// {depth: 4, item: 'Great answer!'},
-// {depth: 4, item: 'You can put javascript in a php or asp file and mix match that way.'},
-// {depth: 9, item: 'Nah hack it up in a hex editor #DEADBEEF :-)'},
-// {depth: 4, item: 'OGs use CSV files :p'},
-// {depth: 4, item: '*React has entered the chat*'}
+{depth: 9, item: "I'm so glad someone said this. All of the lego blo…igned to fit together, regardless of size format."},
+{depth: 24, item: 'Ive never hurt my foot stepping on a regular expression. Check and mate.'},
+{depth: 19, item: 'That is absolutely useless. Lego is better.'},
+{depth: 14, item: 'I also know regular expressions.'},
+{depth: 9, item: 'Thank god you saved the day, I was also going to tell everyone'},
+{depth: 9, item: 'I dirty deleted my comment when I saw yours.\nThank…combine-duplo-and-lego-pieces-blt5b27e84ae5653a30'},
+{depth: 4, item: '&gt; Imagine fitting legos and duplo together. The…plo-blocks-compatible-with-lego-blocks-in-any-way'},
+{depth: 19, item: 'Oh yes! It was just fine. I just really enjoy shar… and how they interact is very interesting to me.'},
+{depth: 14, item: 'Oh yeah that makes sense, I just used french as an…me to my mind. But I hope it got the idea across.'},
+{depth: 14, item: 'Most popular programming languages were highly inf…r analogy (C being similar to Latin in this case)'},
+{depth: 19, item: 'He defeated king Harold and started the Norman con…"\n\nThanks for bringing the error to my attention!'},
+{depth: 14, item: 'William the Bastard Duke of Normandy, also known a…nqueror, did what now? At the Battle of Hastings?'},
+{depth: 9, item: 'Should have gone with an non Latin language like J…e battle of hastings for this.\n\nEdit-fixed a typo'},
+{depth: 14, item: 'JSON is just one way to represent data, one of the…erves to make it easier to transfer and maintain.'},
+{depth: 9, item: 'so in this case is JSON just a way to translate? A…t the structure of the code it looks intimidating'},
+{depth: 4, item: 'If may I add another example to your explanation:\n…ifferent word ( Milk in english, Lait in French).'},
+{depth: 9, item: 'php writes text like "SELECT \\* FROM USER" to a so…could be anything, as long as the data is correct'},
+{depth: 4, item: 'Can I just ask - if, say, PHP connects to my datab…? Through what protocol do these two communicate?'},
+{depth: 4, item: 'Great answer!'},
+{depth: 4, item: 'You can put javascript in a php or asp file and mix match that way.'},
+{depth: 9, item: 'Nah hack it up in a hex editor #DEADBEEF :-)'},
+{depth: 4, item: 'OGs use CSV files :p'},
+{depth: 4, item: '*React has entered the chat*'}
 ]
 
 let orderedComments = []
@@ -74,12 +74,12 @@ for(let i = 0; i < comments.length; i++){
                 orderedComments[orderedComments.length] = (thread)
             }
             
-            if(orderedComments.length == 1){
-                location = -1
-            } 
-            else {
-            location = orderedComments.findLastIndex(obj => theShift['depth'] >= obj[0]['depth']) 
-            }
+                if(orderedComments.length == 1 && theShift['depth'] > orderedComments[0][0]['depth']){
+                    location = -1
+                } 
+                else {
+                location = orderedComments.findLastIndex(obj => theShift['depth'] >= obj[0]['depth']) 
+                }
                 
             
             
@@ -88,25 +88,18 @@ for(let i = 0; i < comments.length; i++){
 
             if(location == -1){
                 orderedComments.unshift([theShift])
-                // if(i !== 20){
                 removedArrays = orderedComments.splice(0)
                 orderedComments[0] = removedArrays.reduce((acc, cur) => acc.concat(cur), []);
-                // }
             }
             else{
                 if(location == (orderedComments.length - 1)){
-                    // console.log('the location is ' + location)
-                    // console.log(theShift)
-                    // console.log(orderedComments)
                     orderedComments[(orderedComments.length)] = ([theShift])
                     // orderedComments[(orderedComments.length - 1)].unshift(theShift)
                     // removedArrays = orderedComments.splice(orderedComments.length - 1)
                     // orderedComments[orderedComments.length - 1] = removedArrays.reduce((acc, cur) => acc.concat(cur), []);
 
                 } else {
-                    // console.log('the location is ' + location)
-                    // console.log(theShift)
-                    // console.log(orderedComments)
+                   
                 orderedComments[location + 1].unshift(theShift)
                 removedArrays = orderedComments.splice(location + 1)
                 orderedComments[location + 1] = removedArrays.reduce((acc, cur) => acc.concat(cur), []);
