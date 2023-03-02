@@ -1,7 +1,120 @@
 const comments = 
-// [{depth: 9, item: 'Which is a very common way of creating one app/program with multiple languages.'},
-// {depth: 9, item: 'They werent designed as a single program. The Pok…s explaining how it works with what I just built.'},
-// {depth: 4, item: 'I wouldnt really call that a single program tbh, …ms and then does a little communication with them'}]
+[{depth: 14, item: 'It’s a lot faster, but using libraries written in Fortran or C is faster still and much more common'},
+{depth: 9, item: 'Have you used PyPy at all? It uses a JIT compiler …orking a whole lot faster.\n\nhttps://www.pypy.org/'},
+{depth: 4, item: 'It’s very common to call into code in other langua…is bearable in any non trivial piece of software.'},
+{depth: 9, item: "Haven't seen anyone address it yet, but this is ca… application, a web-based tool, or a mobile tool."},
+{depth: 9, item: 'the last missing bit is the idea of a [process](ht…f like a bunch of cooks in a restaurant kitchen).'},
+{depth: 4, item: 'Thank you, this is the best explanation I’ve received'},
+{depth: 19, item: `For this Web example it's not really that your "mi…ding in stuff in PHP -&gt; *mixing the language*.`},
+{depth: 24, item: 'True. But the project he was talking about had nothing to do with web development'},
+{depth: 19, item: 'Good luck to John Carmack trying to get a webbrowser to interpret C++'},
+{depth: 14, item: "I listened to an interview with John Carmack, and …s where it's preferable to use only one language?"},
+{depth: 9, item: 'Basically yes, there is (probably) no single big c…n side so it is best to mix match their up sides.'},
+{depth: 9, item: 'They used whatever the appropriate languages were …ls available that are better than previous tools.'},
+{depth: 4, item: "But i'm confused, did Musk, Bill Gates, Zuckerberg…ll these different languages to build their apps?"}
+]
+
+
+
+
+let orderedComments = []
+let thread = [];
+let location;
+let theShift;
+let mergedObj;
+let removedArrays;
+
+
+for(let i = 0; i < comments.length; i++){
+    //THESE FIRST TWO CONDITIONALS ARE FOR ESTABLISHING THE CURRENT THREAD
+    if(i === 0){
+        thread.push(comments[i])
+    } 
+    else if(comments[i]['depth'] < comments[(i - 1)]['depth']){
+        thread.unshift(comments[i])
+    }
+
+    //HANDLES THE CODE FOR WHEN THE NEXT VALUE IS NOT A COMMENT THREAD
+    else if(comments[i]['depth'] >= comments[(i - 1)]['depth']){
+        if(thread.length > 0){
+            theShift = thread.shift()
+            if(thread.length > 0){
+                orderedComments[orderedComments.length] = (thread)
+            }
+
+            if(orderedComments.length == 1 && theShift['depth'] < orderedComments[0][0]['depth']){
+                location = -1
+            } 
+            else {
+            location = orderedComments.findLastIndex(obj => theShift['depth'] >= obj[0]['depth']) 
+            }
+                
+// if(i === 4){
+//     console.log(location)
+//     console.log(theShift)
+// }
+
+            if(location == -1){
+                orderedComments.unshift([theShift])
+                removedArrays = orderedComments.splice(0)
+                orderedComments[0] = removedArrays.reduce((acc, cur) => acc.concat(cur), []);
+            }
+            else{
+                if(location == (orderedComments.length - 1)){
+                    orderedComments[(orderedComments.length)] = ([theShift])
+                }
+                 else {    
+                orderedComments[location + 1].unshift(theShift)
+                removedArrays = orderedComments.splice(location + 1)
+                orderedComments[location + 1] = removedArrays.reduce((acc, cur) => acc.concat(cur), []);
+                    
+                }
+            }
+        }
+            thread = [];
+            thread.push(comments[i])
+    }
+
+
+    //TO TEDIOUSLY HANDLE THE LAST VALUES OF THE LOOP WITH RECOPYING THE ABOVE CODE
+    if(i == comments.length - 1){
+   
+        if(thread.length > 0){
+            theShift = thread.shift()
+            if(thread.length > 0){
+                orderedComments[orderedComments.length] = (thread)
+            }
+
+            if(orderedComments.length == 1 && theShift['depth'] < orderedComments[0][0]['depth']){
+                location = -1
+            } 
+            else {
+            location = orderedComments.findLastIndex(obj => theShift['depth'] >= obj[0]['depth']) 
+            }
+                
+            if(location == -1){
+                orderedComments.unshift([theShift])
+                removedArrays = orderedComments.splice(0)
+                orderedComments[0] = removedArrays.reduce((acc, cur) => acc.concat(cur), []);
+            }
+            else{
+                if(location == (orderedComments.length - 1)){
+                    orderedComments[(orderedComments.length)] = ([theShift])
+                } 
+                else { 
+                orderedComments[location + 1].unshift(theShift)
+                removedArrays = orderedComments.splice(location + 1)
+                orderedComments[location + 1] = removedArrays.reduce((acc, cur) => acc.concat(cur), []);   
+                }
+            }
+        }
+    }
+
+}
+
+console.log(orderedComments)
+
+
 
 //  [{depth: 44, item: '&lt;whispers&gt;Ive never heard of them until this thread. #protobufs2024'},
 // {depth: 39, item: 'Now I feel left out of working almost exclusively with XML. Protobufs must be the shit. \n\nProtobufs.'},
@@ -47,103 +160,3 @@ const comments =
 // {depth: 9, item: 'Nah hack it up in a hex editor #DEADBEEF :-)'},
 // {depth: 4, item: 'OGs use CSV files :p'},
 // {depth: 4, item: '*React has entered the chat*'}]
-
-[{depth: 24, item: "What I meant was that most websites and webapps in… least, two stacks, and they aren't microservices"},
-{depth: 19, item: "Sure, I guess? But it's a a lot more reasonable th…sed about what point you are trying to make here?"},
-{depth: 14, item: 'The *today* is an assumption'},
-{depth: 9, item: 'Nobody was asking which method was first, OP asked…ated API layer), or messaging systems like kafka.'},
-{depth: 4, item: "I don't think that's relevant? Multiple programmin…with each other date to way before microservices."}]
-
-let orderedComments = []
-let thread = [];
-let location;
-let theShift;
-let mergedObj;
-let removedArrays;
-
-
-for(let i = 0; i < comments.length; i++){
-    //THESE FIRST TWO CONDITIONALS ARE FOR ESTABLISHING THE CURRENT THREAD
-    if(i === 0){
-        thread.push(comments[i])
-    } 
-    else if(comments[i]['depth'] < comments[(i - 1)]['depth']){
-        thread.unshift(comments[i])
-    }
-
-    //HANDLES THE CODE FOR WHEN THE NEXT VALUE IS NOT A COMMENT THREAD
-    else if(comments[i]['depth'] >= comments[(i - 1)]['depth']){
-        if(thread.length > 0){
-            theShift = thread.shift()
-            if(thread.length > 0){
-                orderedComments[orderedComments.length] = (thread)
-            }
-
-            if(orderedComments.length == 1 && theShift['depth'] > orderedComments[0][0]['depth']){
-                location = -1
-            } 
-            else {
-            location = orderedComments.findLastIndex(obj => theShift['depth'] >= obj[0]['depth']) 
-            }
-                
-
-            if(location == -1){
-                orderedComments.unshift([theShift])
-                removedArrays = orderedComments.splice(0)
-                orderedComments[0] = removedArrays.reduce((acc, cur) => acc.concat(cur), []);
-            }
-            else{
-                if(location == (orderedComments.length - 1)){
-                    orderedComments[(orderedComments.length)] = ([theShift])
-                }
-                 else {    
-                orderedComments[location + 1].unshift(theShift)
-                removedArrays = orderedComments.splice(location + 1)
-                orderedComments[location + 1] = removedArrays.reduce((acc, cur) => acc.concat(cur), []);
-                    
-                }
-            }
-        }
-            thread = [];
-            thread.push(comments[i])
-    }
-
-
-    //TO TEDIOUSLY HANDLE THE LAST VALUES OF THE LOOP WITH RECOPYING THE ABOVE CODE
-    if(i == comments.length - 1){
-   
-        if(thread.length > 0){
-            theShift = thread.shift()
-            if(thread.length > 0){
-                orderedComments[orderedComments.length] = (thread)
-            }
-
-            if(orderedComments.length == 1 && theShift['depth'] > orderedComments[0][0]['depth']){
-                location = -1
-            } 
-            else {
-            location = orderedComments.findLastIndex(obj => theShift['depth'] >= obj[0]['depth']) 
-            }
-                
-            if(location == -1){
-                orderedComments.unshift([theShift])
-                removedArrays = orderedComments.splice(0)
-                orderedComments[0] = removedArrays.reduce((acc, cur) => acc.concat(cur), []);
-            }
-            else{
-                if(location == (orderedComments.length - 1)){
-                    orderedComments[(orderedComments.length)] = ([theShift])
-                } 
-                else { 
-                orderedComments[location + 1].unshift(theShift)
-                removedArrays = orderedComments.splice(location + 1)
-                orderedComments[location + 1] = removedArrays.reduce((acc, cur) => acc.concat(cur), []);   
-                }
-            }
-        }
-    }
-
-}
-
-console.log(orderedComments)
-
