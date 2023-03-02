@@ -75,7 +75,7 @@ for(let i = 0; i < comments.length; i++){
                 orderedComments[orderedComments.length] = (thread)
             }
         
-            // location = orderedComments.findLastIndex(obj => theShift['depth'] >= obj[0]['depth'])
+            
             location = orderedComments.findLastIndex(obj => {
                 if(obj[0][0]){
                     return (theShift['depth'] >= obj[0][0]['depth']) 
