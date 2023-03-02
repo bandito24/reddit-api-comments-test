@@ -53,7 +53,6 @@ let removedArrays;
 
 
 for(let i = 0; i < comments.length; i++){
-
     if(i === 0){
         thread.push(comments[i])
     } 
@@ -74,42 +73,47 @@ for(let i = 0; i < comments.length; i++){
             if(thread.length > 0){
                 orderedComments[orderedComments.length] = (thread)
             }
-        
             
-            location = orderedComments.findLastIndex(obj => {
-                if(obj[0][0]){
-                    return (theShift['depth'] >= obj[0][0]['depth']) 
-                }
-                else {
-                   return (theShift['depth'] >= obj[0]['depth']) 
-                }
-            })
+            if(orderedComments.length == 1){
+                location = -1
+            } 
+            else {
+            location = orderedComments.findLastIndex(obj => theShift['depth'] >= obj[0]['depth']) 
+            }
+                
+            
             
                 
             // location = orderedComments.findLastIndex(obj => theShift['depth'] >= (Array.isArray(obj) ? obj[0]['depth'] : obj['depth']))
 
             if(location == -1){
                 orderedComments.unshift([theShift])
-                if(i !== 20){
+                // if(i !== 20){
                 removedArrays = orderedComments.splice(0)
                 orderedComments[0] = removedArrays.reduce((acc, cur) => acc.concat(cur), []);
-                }
+                // }
             }
             else{
                 if(location == (orderedComments.length - 1)){
-                    orderedComments[(orderedComments.length - 1)].unshift(theShift)
+                    // console.log('the location is ' + location)
+                    // console.log(theShift)
+                    // console.log(orderedComments)
+                    orderedComments[(orderedComments.length)] = ([theShift])
+                    // orderedComments[(orderedComments.length - 1)].unshift(theShift)
                     // removedArrays = orderedComments.splice(orderedComments.length - 1)
                     // orderedComments[orderedComments.length - 1] = removedArrays.reduce((acc, cur) => acc.concat(cur), []);
 
                 } else {
-                    if(i !== 20){
+                    // console.log('the location is ' + location)
+                    // console.log(theShift)
+                    // console.log(orderedComments)
                 orderedComments[location + 1].unshift(theShift)
                 removedArrays = orderedComments.splice(location + 1)
                 orderedComments[location + 1] = removedArrays.reduce((acc, cur) => acc.concat(cur), []);
-            }
+                    
                 }
             }
-
+            
 
         }
 
@@ -120,8 +124,8 @@ for(let i = 0; i < comments.length; i++){
     }
 
 }
-console.log(orderedComments)
 
+console.log(orderedComments)
 
  // console.log(typeof(orderedComments[0]))
                 // console.log(i)
@@ -192,7 +196,7 @@ console.log(orderedComments)
 
 
 
-// console.log(orderedComments)
+
 
 
 
